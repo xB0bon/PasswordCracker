@@ -45,21 +45,39 @@ public class PasswordCrack
         
         string crackPassword = "";
         Random random = new Random();
+        
+        List<string> passwords = new List<string>() {" "};
+        string t = "";
+        
         while (crackPassword != Password)
         {
-            crackPassword = "";
-            for (int i = 0; i < Password.Length; i++)
+
+            while (passwords.Contains(t))
             {
-                crackPassword += ZnakiHasla[random.Next(0, ZnakiHasla.Count)];
+                crackPassword = "";
+                for (int i = 0; i < Password.Length; i++)
+                {
+                    crackPassword += ZnakiHasla[random.Next(0, ZnakiHasla.Count)];
+                }
+
+                t = crackPassword; 
             }
+            
+            passwords.Add(t);
+            
             
             TimeSpan elapsed = stopwatch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}", elapsed.Hours, elapsed.Minutes, elapsed.Seconds);
             Console.WriteLine(elapsedTime + " Attempt: " + Attempt + " Password: " + crackPassword);
 
             Attempt++;
+            
+            
         }
         stopwatch.Stop();
+
+        Console.WriteLine(passwords.Count);
+        
         return crackPassword;
     }
 }
